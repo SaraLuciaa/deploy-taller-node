@@ -14,7 +14,7 @@ class AuthService {
         const isMatch: boolean = await bcrypt.compare(userLogin.password, userExists.password);
 
         if (!isMatch) {
-            throw new ReferenceError("Not Authorized");
+            throw new ReferenceError("Password does not match");
         }
 
         return {

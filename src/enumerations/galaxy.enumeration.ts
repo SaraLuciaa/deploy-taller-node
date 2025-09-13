@@ -1,5 +1,6 @@
-export enum StateGalaxy {
-    DRAFT = "DRAFT", 
-    ACTIVE = "ACTIVE", 
-    ARCHIVED = "ARCHIVED"
+export enum TypeGalaxy {
+    SPIRAL = 'spiral',
+    ELLIPTICAL = 'elliptical',
+    IRREGULAR = 'irregular',
+    LENTICULAR = 'lenticular'
 }

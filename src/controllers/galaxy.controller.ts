@@ -5,7 +5,12 @@ import { galaxyService } from "../services/galaxy.service";
 class GalaxyController {
     public async create(req: Request, res: Response) {
         try {
-            const newGalaxy: GalaxyDocument = await galaxyService.create(req.body as GalaxyInput);
+            const userId = req.user?.id;
+            if (!userId) {
+                return res.status(401).json({ message: "Unauthorized: user not authenticated." });
+            }
+            const galaxyInput: GalaxyInput = { ...req.body, createdBy: userId };
+            const newGalaxy: GalaxyDocument = await galaxyService.create(galaxyInput);
             res.status(201).json(newGalaxy);
         } catch (error) {
             res.status(500).json(error);
@@ -30,6 +35,16 @@ class GalaxyController {
                 return;
             }
             res.json(galaxy);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
+    public async getByUser(req: Request, res: Response) {
+        try {
+            const userId = req.params.userId || "";
+            const galaxies = await galaxyService.getByUserId(userId);
+            res.json(galaxies);
         } catch (error) {
             res.status(500).json(error);
         }

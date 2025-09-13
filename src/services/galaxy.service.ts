@@ -1,9 +1,17 @@
 // Create, FindAll, FindById, DeleteById, UpdateById
 import { GalaxyInput, GalaxyInputUpdate, GalaxyDocument } from "../interfaces";
-import { GalaxyModel } from "../models/galaxy.model";
+import { GalaxyModel, UserModel } from "../models";
 
 class GalaxyService {
+    public async getByUserId(userId: string): Promise<GalaxyDocument[]> {
+        return GalaxyModel.find({ createdBy: userId });
+    }
     public async create(galaxyInput: GalaxyInput): Promise<GalaxyDocument> {
+        const userExists = await UserModel.findById(galaxyInput.createdBy);
+        if (!userExists) {
+            throw new ReferenceError("User not found");
+        }
+
         return GalaxyModel.create(galaxyInput);
     }
 

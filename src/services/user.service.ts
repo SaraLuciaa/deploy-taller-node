@@ -45,7 +45,7 @@ class UserService {
     }
 
     public getAll(): Promise<UserDocument[]> {
-        return UserModel.find({ deletedAt: null });
+        return UserModel.find();
     }
 
     public getById(id: string): Promise<UserDocument | null> {
@@ -54,7 +54,7 @@ class UserService {
 
     public async delete(id: string): Promise<boolean> {
         try {
-            const result = await UserModel.findByIdAndUpdate(id, { deletedAt: new Date() })
+            const result = await UserModel.findByIdAndDelete(id);
             return result !== null;
         } catch (error) {
             throw error;
