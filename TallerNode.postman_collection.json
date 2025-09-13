@@ -1,0 +1,724 @@
+{
+	"info": {
+		"_postman_id": "eb965de9-390c-4a32-9bca-262f3d30af16",
+		"name": "TallerNode",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47026171"
+	},
+	"item": [
+		{
+			"name": "01AuthCreation",
+			"item": [
+				{
+					"name": "Create Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = {};\r",
+									"try { json = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"if (json._id) {\r",
+									"    pm.environment.set(\"adminId\", json._id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Juana Perez\",\r\n  \"email\": \"juana@example.com\",\r\n  \"password\": \"juana123*S\",\r\n  \"roles\": [\"admin\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = {};\r",
+									"try { json = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"if (json._id) {\r",
+									"    pm.environment.set(\"userId\", json._id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Juan Perez\",\r\n  \"email\": \"juan@example.com\",\r\n  \"password\": \"juan123*S\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = {};\r",
+									"try { json = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"if (json.token && json.token.token) {\r",
+									"    pm.environment.set(\"tokenAdmin\", json.token.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juana@example.com\",\r\n    \"password\": \"juana123*S\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = {};\r",
+									"try { json = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"if (json.token && json.token.token) {\r",
+									"    pm.environment.set(\"tokenUser\", json.token.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juan@example.com\",\r\n    \"password\": \"juan123*S\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02User",
+			"item": [
+				{
+					"name": "Get All Users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Juan Actualizado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02Galaxy",
+			"item": [
+				{
+					"name": "Create galaxy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenUser\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = {};\r",
+									"try { json = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"if (json._id) {\r",
+									"    pm.environment.set(\"galaxyId\", json._id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Andromeda\",\r\n  \"type\": \"spiral\",\r\n  \"distance_ly\": 2537000,\r\n  \"mass_estimate_solar\": 1230000000000,\r\n  \"stars_estimate\": 1000000000000,\r\n  \"constellation\": \"Andromeda\",\r\n  \"discovered_by\": \"Abd al-Rahman al-Sufi\",\r\n  \"discovery_year\": 964,\r\n  \"description\": \"Nearest major galaxy to the Milky Way.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/galaxies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"galaxies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Galaxies",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/galaxies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"galaxies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Galaxy by UserId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenUser\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/galaxies/user/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"galaxies",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Galaxy by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenUser\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Andromedaaaaa\",\r\n  \"type\": \"spiral\",\r\n  \"distance_ly\": 2537000,\r\n  \"mass_estimate_solar\": 1230000000000,\r\n  \"stars_estimate\": 1000000000000,\r\n  \"constellation\": \"Andromeda\",\r\n  \"discovered_by\": \"Abd al-Rahman al-Sufi\",\r\n  \"discovery_year\": 964,\r\n  \"description\": \"Nearest major galaxy to the Milky Way.\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/galaxies/{{galaxyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"galaxies",
+								"{{galaxyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Galaxy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Andromedita\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/galaxies/{{galaxyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"galaxies",
+								"{{galaxyId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04Planet",
+			"item": []
+		},
+		{
+			"name": "05Deletion",
+			"item": [
+				{
+					"name": "Delete Galaxy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/galaxies/{{galaxyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"galaxies",
+								"{{galaxyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Admin",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/{{adminId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{adminId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:3000"
+		}
+	]
+}
