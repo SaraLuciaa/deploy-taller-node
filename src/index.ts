@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import { db } from './config/connectionDB';
-import { userRouter } from './routes/indext';
+import { authRouter, userRouter } from './routes/indext';
 import { errorHandler, logger } from './middlewares';
 
 const app: Express = express();
@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/users", userRouter.router);
+app.use("/auth", authRouter.router);
 
 app.use(errorHandler);
 

@@ -14,5 +14,11 @@ export interface UserInputUpdate {
 export interface UserDocument extends UserInput, mongoose.Document {
     createdAt: Date,
     updatedAt: Date,
-    deletedAt: Date
+    deletedAt: Date,
+    roles: UserRole[];
+} 
+
+export enum UserRole {
+    ADMIN = "admin",
+    USER = "user"
 }
