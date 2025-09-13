@@ -6,7 +6,12 @@ import { planetService } from "../services";
 class PlanetController {
     public async create(req: Request, res: Response) {
         try {
-            const newPlanet: PlanetDocument = await planetService.create(req.body as PlanetInput);
+            const userId = req.user?.id;
+            if (!userId) {  
+                return res.status(401).json({ message: "Unauthorized: user not authenticated." });
+            }
+            const planetInput: PlanetInput = { ...req.body, createdBy: userId };
+            const newPlanet: PlanetDocument = await planetService.create(planetInput);
             res.status(201).json(newPlanet);
         } catch (error) {
             if (error instanceof ReferenceError) {
@@ -63,6 +68,16 @@ class PlanetController {
         try {
             const galaxyId: string = req.params.galaxyId || "";
             const planets: PlanetDocument[] = await planetService.getByGalaxyId(galaxyId);
+            res.json(planets);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
+    public async getByUser(req: Request, res: Response) {
+        try {
+            const userId = req.params.userId || "";
+            const planets = await planetService.getByUserId(userId);
             res.json(planets);
         } catch (error) {
             res.status(500).json(error);

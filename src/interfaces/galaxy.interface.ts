@@ -14,7 +14,6 @@ export interface GalaxyDocument extends mongoose.Document {
     createdBy: UserDocument;
     createdAt: Date,
     updatedAt: Date,
-    deletedAt: Date,
 }
 
 export interface GalaxyInput{

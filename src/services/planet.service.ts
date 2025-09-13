@@ -29,6 +29,10 @@ class PlanetService {
     public getByGalaxyId(galaxyId: string): Promise<PlanetDocument[]> {
         return PlanetModel.find({ galaxyId: galaxyId });
     }
+
+    public async getByUserId(userId: string): Promise<PlanetDocument[]> {
+        return PlanetModel.find({ createdBy: userId });
+    }
     
     public getById(id: string): Promise<PlanetDocument | null> {
         return PlanetModel.findById(id);

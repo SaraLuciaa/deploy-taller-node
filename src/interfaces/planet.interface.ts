@@ -1,37 +1,44 @@
 
 import mongoose from "mongoose";
+import { CategoryPlanet } from "../enumerations";
 
 export interface PlanetDocument extends mongoose.Document {
-    galaxyId: string;
-    startDate: Date;
-    endDate: Date;
-    operatorUsername: string;
-    status: string;
-    notes: string;
-    measuredPH: number;
-    measuredTemperature: number;
+    name: string;
+    category: CategoryPlanet;
+    galaxyId: mongoose.Types.ObjectId;                      
+    mass_earth: number;
+    radius_km: number;
+    temperature_k: number; 
+    has_life: boolean;
+    moons_count: number;
+    discovery_year: number;
+    createdBy: mongoose.Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
-    deletedAt: Date;
 }
 
 export interface PlanetInput {
-    galaxyId: string;
-    startDate: Date;
-    endDate: Date;
-    operatorUsername: string;
-    status: string;
-    notes: string;
-    measuredPH: number;
-    measuredTemperature: number;
+    name: string;
+    category: CategoryPlanet;
+    galaxyId: mongoose.Types.ObjectId;                      
+    mass_earth: number;
+    radius_km: number;
+    temperature_k: number; 
+    has_life: boolean;
+    moons_count: number;
+    discovery_year: number;
+    createdBy: mongoose.Types.ObjectId;
 }
 
 export interface PlanetInputUpdate {
-    startDate?: Date;
-    endDate?: Date;
-    operatorUsername?: string;
-    status?: string;
-    notes?: string;
-    measuredPH?: number;
-    measuredTemperature?: number;
+    name?: string;
+    category?: CategoryPlanet;
+    galaxyId?: mongoose.Types.ObjectId;                      
+    mass_earth?: number;
+    radius_km?: number;
+    temperature_k?: number; 
+    has_life?: boolean;
+    moons_count?: number;
+    discovery_year?: number;
+    createdBy?: mongoose.Types.ObjectId;
 }

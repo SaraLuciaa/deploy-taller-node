@@ -1,16 +1,18 @@
 import mongoose from "mongoose";
-import { StatusPlanet } from "../enumerations";
 import { PlanetDocument } from "../interfaces";
+import { CategoryPlanet } from "../enumerations";
 
-const planetSchema = new mongoose.Schema({
-    galaxyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Galaxy', required: true },
-    startDate: { type: Date, required: true, default: Date.now },
-    endDate: { type: Date },
-    operatorUsername: { type: String, required: true },
-    status: { type: [String], enum: Object.values(StatusPlanet), default: StatusPlanet.RUNNING },
-    notes: { type: String },
-    measuredPH: { type: Number },
-    measuredTemperature: { type: Number },
-}, { timestamps: true, collection: 'planet' })
+const PlanetSchema = new mongoose.Schema({
+  name: { type: String, required: true, trim: true },
+  category: { type: String, enum: Object.values(CategoryPlanet), required: true },
+  galaxyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Galaxy', required: true },                      
+  mass_earth: { type: Number, min: 0 },
+  radius_km: { type: Number, min: 0 },
+  temperature_k: { type: Number, min: 0 }, 
+  has_life: { type: Boolean, default: false },
+  moons_count: { type: Number, min: 0, default: 0 },
+  discovery_year: { type: Number, min: 0 },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+}, {  timestamps: true, collection: 'planets'});
 
-export const PlanetModel = mongoose.model<PlanetDocument>("Planet", planetSchema)
+export const PlanetModel = mongoose.model<PlanetDocument>("Planet", PlanetSchema)
