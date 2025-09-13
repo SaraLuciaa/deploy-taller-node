@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "eb965de9-390c-4a32-9bca-262f3d30af16",
+		"_postman_id": "c9e98bf8-a7e3-400a-a7da-c84c17f8d04c",
 		"name": "TallerNode",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "47026171"
@@ -325,7 +325,7 @@
 			]
 		},
 		{
-			"name": "02Galaxy",
+			"name": "03Galaxy",
 			"item": [
 				{
 					"name": "Create galaxy",
@@ -391,7 +391,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"const t = pm.environment.get(\"tokenUser\");\r",
 									"if (t) {\r",
 									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
 									"}"
@@ -401,16 +401,9 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{baseUrl}}/api/galaxies",
 							"host": [
@@ -441,16 +434,9 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{baseUrl}}/api/galaxies/user/{{userId}}",
 							"host": [
@@ -483,16 +469,9 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Andromedaaaaa\",\r\n  \"type\": \"spiral\",\r\n  \"distance_ly\": 2537000,\r\n  \"mass_estimate_solar\": 1230000000000,\r\n  \"stars_estimate\": 1000000000000,\r\n  \"constellation\": \"Andromeda\",\r\n  \"discovered_by\": \"Abd al-Rahman al-Sufi\",\r\n  \"discovery_year\": 964,\r\n  \"description\": \"Nearest major galaxy to the Milky Way.\"\r\n}"
-						},
 						"url": {
 							"raw": "{{baseUrl}}/api/galaxies/{{galaxyId}}",
 							"host": [
@@ -563,12 +542,280 @@
 			]
 		},
 		{
-			"name": "04Planet",
-			"item": []
+			"name": "03Planet",
+			"item": [
+				{
+					"name": "Create planet",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenUser\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = {};\r",
+									"try { json = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"if (json._id) {\r",
+									"    pm.environment.set(\"planetId\", json._id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Earth\",\r\n  \"category\": \"rocky\",\r\n  \"galaxyId\": \"{{galaxyId}}\",\r\n  \"mass_earth\": 1,\r\n  \"radius_km\": 6371,\r\n  \"temperature_k\": 288,\r\n  \"has_life\": true,\r\n  \"moons_count\": 1,\r\n  \"discovery_year\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/planets",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"planets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Planets by GalaxyId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenUser\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/planets/galaxy/{{galaxyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"planets",
+								"galaxy",
+								"{{galaxyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Planet by UserId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenUser\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/planets/user/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"planets",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Planet by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenUser\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/planets/{{planetId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"planets",
+								"{{planetId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Planet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Marte\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/planets/{{planetId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"planets",
+								"{{planetId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "05Deletion",
 			"item": [
+				{
+					"name": "Delete Planet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/planets/{{planetId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"planets",
+								"{{planetId}}"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Delete Galaxy",
 					"event": [
