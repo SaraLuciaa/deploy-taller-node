@@ -44,8 +44,6 @@ La plataforma cuenta con un sistema de **roles** que garantiza la seguridad y el
 
 2. **Crea el archivo `.env` en la raíz**
 
-   > Estas variables están preparadas para que la app se conecte al servicio `mongo` definido en `docker-compose.yml`.
-
    ```env
    PORT, DB_URI, JWT_SECRET
    ```
