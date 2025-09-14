@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 export async function seedAdmin() {
     const adminEmail = process.env.ADMIN_EMAIL || "admin@example.com";
     const adminPassword = process.env.ADMIN_PASSWORD || "secret";
-    const adminName = process.env.ADMIN_NAME || " Admin";
+    const adminName = process.env.ADMIN_NAME || "Admin";
 
     const existing = await UserModel.findOne({ email: adminEmail });
     if (!existing) {
