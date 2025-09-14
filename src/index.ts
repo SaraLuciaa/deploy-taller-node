@@ -8,7 +8,7 @@ const app: Express = express();
 
 process.loadEnvFile();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 app.use(logger);
 
@@ -24,7 +24,7 @@ app.use(errorHandler);
 
 db.then(async () => {
     await seedAdmin();
-    app.listen(port, () => {
+    app.listen(port, "0.0.0.0", () => {
         console.log(`Server is running on port ${port}`);
     });
 });
