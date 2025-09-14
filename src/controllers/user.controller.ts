@@ -5,6 +5,23 @@ import { AppError } from "../middlewares";
 import { userService } from "../services";
 
 class UserController {
+    
+    public async profile(req: Request, res: Response) {
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                return res.status(401).json({ message: "Unauthorized: user not authenticated." });
+            }
+            const user: UserDocument | null = await userService.getById(userId);
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res.json(user);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
     public async create(req: Request, res: Response, next: Function) {
         try {
             const newUser: UserDocument = await userService.create(req.body as UserInput);
