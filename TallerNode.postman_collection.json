@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c9e98bf8-a7e3-400a-a7da-c84c17f8d04c",
+		"_postman_id": "ef1ac658-7790-437b-9fec-6c3bb95f7f50",
 		"name": "TallerNode",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "47026171"
@@ -10,7 +10,7 @@
 			"name": "01AuthCreation",
 			"item": [
 				{
-					"name": "Create Admin",
+					"name": "Login Admin",
 					"event": [
 						{
 							"listen": "test",
@@ -19,8 +19,8 @@
 									"let json = {};\r",
 									"try { json = pm.response.json(); } catch(e) {}\r",
 									"\r",
-									"if (json._id) {\r",
-									"    pm.environment.set(\"adminId\", json._id);\r",
+									"if (json.token && json.token.token) {\r",
+									"    pm.environment.set(\"tokenAdmin\", json.token.token);\r",
 									"}"
 								],
 								"type": "text/javascript",
@@ -36,7 +36,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Juana Perez\",\r\n  \"email\": \"juana@example.com\",\r\n  \"password\": \"juana123*S\",\r\n  \"roles\": [\"admin\"]\r\n}",
+							"raw": "{\r\n    \"email\": \"{{adminEmail}}\",\r\n    \"password\": \"{{passwordEmail}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,13 +44,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/users",
+							"raw": "{{baseUrl}}/auth/login",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"api",
-								"users"
+								"auth",
+								"login"
 							]
 						}
 					},
@@ -68,6 +68,19 @@
 									"\r",
 									"if (json._id) {\r",
 									"    pm.environment.set(\"userId\", json._id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
 									"}"
 								],
 								"type": "text/javascript",
@@ -98,53 +111,6 @@
 							"path": [
 								"api",
 								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login Admin",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"let json = {};\r",
-									"try { json = pm.response.json(); } catch(e) {}\r",
-									"\r",
-									"if (json.token && json.token.token) {\r",
-									"    pm.environment.set(\"tokenAdmin\", json.token.token);\r",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"juana@example.com\",\r\n    \"password\": \"juana123*S\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/auth/login",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"auth",
-								"login"
 							]
 						}
 					},
@@ -202,6 +168,40 @@
 		{
 			"name": "02User",
 			"item": [
+				{
+					"name": "Profile",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const t = pm.environment.get(\"tokenAdmin\");\r",
+									"if (t) {\r",
+									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Get All Users",
 					"event": [
@@ -902,40 +902,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Delete Admin",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const t = pm.environment.get(\"tokenAdmin\");\r",
-									"if (t) {\r",
-									"    pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\r",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/users/{{adminId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"{{adminId}}"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		}
@@ -966,6 +932,14 @@
 		{
 			"key": "baseUrl",
 			"value": "localhost:3000"
+		},
+		{
+			"key": "adminEmail",
+			"value": "admin@example.com"
+		},
+		{
+			"key": "passwordEmail",
+			"value": "secret"
 		}
 	]
 }
