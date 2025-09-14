@@ -935,11 +935,13 @@
 		},
 		{
 			"key": "adminEmail",
-			"value": "admin@example.com"
+			"value": "",
+			"type": "default"
 		},
 		{
 			"key": "passwordEmail",
-			"value": "secret"
+			"value": "",
+			"type": "default"
 		}
 	]
 }
