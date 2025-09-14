@@ -6,7 +6,7 @@ import { UserModel } from "../models";
 class UserService {
     public async create(userInput: UserInput): Promise<UserDocument> {
 
-        process.loadEnvFile();
+        // process.loadEnvFile();
 
         const userExists: UserDocument | null = await this.findByEmail(userInput.email);
         if (userExists !== null) {

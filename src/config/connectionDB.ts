@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-process.loadEnvFile();
+// process.loadEnvFile();
 
 const connectionString = process.env.MONGO_URI || "";
 
